@@ -321,8 +321,6 @@
         return previousInputs[JSON.stringify(args)];
       }
     }
-    
-
 
   };
 
@@ -333,6 +331,13 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var newArgs = [];
+    for (var i = 2; i < arguments.length; i++) {
+      newArgs.push(arguments[i]);
+    }
+    setTimeout(function() {
+      return func.apply(this, newArgs);
+    }, wait);
   };
 
 
@@ -347,6 +352,7 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arrayCopy = array.slice(0, array.length);
   };
 
 
