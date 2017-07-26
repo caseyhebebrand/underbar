@@ -200,11 +200,9 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    var iterator = iterator || _.identity;
     return _.reduce(collection, function(passTest, item) {
-      if (iterator) {
         return (passTest && iterator(item)) ? true : false;
-      }
-      return item ? true : false;
     }, true)
   };
 
@@ -212,6 +210,7 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    var iterator = iterator || _.identity;
     return !(_.every(collection, function(item) {
       return iterator ? !iterator(item) : !item;
     }));
@@ -309,6 +308,22 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var previousInputs = {};
+
+    return function() {
+      var args = arguments;
+
+      if (previousInputs[JSON.stringify(args)] === undefined) {
+        var result = func.apply(this, arguments)
+        previousInputs[JSON.stringify(args)] = result;
+        return result;
+      } else {
+        return previousInputs[JSON.stringify(args)];
+      }
+    }
+    
+
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
